@@ -52,7 +52,6 @@ public class EasyWireguardClient {
                 .toBodilessEntity()
                 .block();
     }
-
     /** DTO body для PATCH enable/disable. */
     private record ToggleTunnelRequest(boolean enabled) {
     }
