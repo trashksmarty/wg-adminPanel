@@ -1,0 +1,26 @@
+:root {
+  color-scheme: dark;
+}
+
+body {
+  min-height: 100vh;
+}
+
+.card {
+  backdrop-filter: blur(2px);
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+}
+
+.status-enabled {
+  color: #60d394;
+  font-weight: 600;
+}
+
+.status-disabled {
+  color: #ff8fa3;
+  font-weight: 600;
+}
