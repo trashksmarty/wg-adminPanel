@@ -14,6 +14,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Основная бизнес-логика управления туннелями.
+ */
 @Service
 public class TunnelService {
 
@@ -31,11 +34,22 @@ public class TunnelService {
         this.easyWireguardClient = easyWireguardClient;
     }
 
+    /**
+     * Возвращает список туннелей для отображения в UI.
+     */
     @Transactional(readOnly = true)
     public List<TunnelResponse> getAll() {
         return tunnelRepository.findAll().stream().map(this::map).toList();
     }
 
+    /**
+     * Создаёт новый туннель:
+     * 1) валидирует префикс,
+     * 2) собирает итоговое имя,
+     * 3) создаёт туннель во внешнем API,
+     * 4) сохраняет запись локально,
+     * 5) включает туннель.
+     */
     @Transactional
     public TunnelResponse create(TunnelCreateRequest request) {
         if (!prefixRepository.existsById(request.prefix())) {
@@ -57,6 +71,9 @@ public class TunnelService {
         return map(saved);
     }
 
+    /**
+     * Меняет дату окончания активности туннеля.
+     */
     @Transactional
     public TunnelResponse updateExpiration(Long id, TunnelUpdateRequest request) {
         Tunnel tunnel = findById(id);
@@ -64,6 +81,9 @@ public class TunnelService {
         return map(tunnelRepository.save(tunnel));
     }
 
+    /**
+     * Ручное включение/выключение туннеля.
+     */
     @Transactional
     public TunnelResponse setTunnelState(Long id, boolean active) {
         Tunnel tunnel = findById(id);
@@ -72,6 +92,9 @@ public class TunnelService {
         return map(tunnelRepository.save(tunnel));
     }
 
+    /**
+     * Фоновая задача: периодически выключает просроченные активные туннели.
+     */
     @Scheduled(fixedDelayString = "${tunnels.deactivation-check-ms:60000}")
     @Transactional
     public void deactivateExpiredTunnels() {
@@ -83,11 +106,17 @@ public class TunnelService {
         tunnelRepository.saveAll(expired);
     }
 
+    /**
+     * Находит туннель по id или бросает 404-совместимое исключение.
+     */
     private Tunnel findById(Long id) {
         return tunnelRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Tunnel not found: " + id));
     }
 
+    /**
+     * Маппинг entity -> response DTO.
+     */
     private TunnelResponse map(Tunnel tunnel) {
         return new TunnelResponse(
                 tunnel.getId(),

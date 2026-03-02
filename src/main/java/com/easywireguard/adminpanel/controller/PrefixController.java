@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * REST-контроллер для выдачи справочника префиксов в UI.
+ */
 @RestController
 @RequestMapping("/api/admin/prefixes")
 public class PrefixController {
@@ -17,6 +20,9 @@ public class PrefixController {
         this.prefixService = prefixService;
     }
 
+    /**
+     * Возвращает список всех префиксов.
+     */
     @GetMapping
     public List<PrefixResponse> getAll() {
         return prefixService.getAll();

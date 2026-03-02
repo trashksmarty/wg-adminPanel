@@ -1,25 +1,34 @@
+/*
+  Явно указываем браузеру, что интерфейс тёмный.
+  Это влияет на встроенные элементы формы.
+*/
 :root {
   color-scheme: dark;
 }
 
+/* Растягиваем фон на всю высоту окна. */
 body {
   min-height: 100vh;
 }
 
+/* Небольшой визуальный эффект на карточках. */
 .card {
   backdrop-filter: blur(2px);
 }
 
+/* Выравниваем содержимое таблицы по центру по вертикали. */
 .table td,
 .table th {
   vertical-align: middle;
 }
 
+/* Цвет статуса "включён". */
 .status-enabled {
   color: #60d394;
   font-weight: 600;
 }
 
+/* Цвет статуса "выключен". */
 .status-disabled {
   color: #ff8fa3;
   font-weight: 600;

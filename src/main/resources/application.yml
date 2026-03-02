@@ -1,16 +1,21 @@
 spring:
   datasource:
+    # Подключение к PostgreSQL. Значения можно переопределить env-переменными.
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:wg_admin}
     username: ${DB_USER:wg_admin}
     password: ${DB_PASSWORD:wg_admin}
   jpa:
     hibernate:
+      # Для MVP разрешаем автосоздание/обновление схемы.
       ddl-auto: update
     open-in-view: false
 
 server:
+  # Порт backend-приложения.
   port: ${APP_PORT:8080}
 
 easy-wireguard:
+  # URL удалённого API easy-wireguard.
   base-url: ${EW_API_BASE_URL:http://localhost:51821}
+  # Токен доступа к API.
   token: ${EW_API_TOKEN:change-me}

@@ -8,9 +8,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Сервис работы со справочником префиксов.
+ */
 @Service
 public class PrefixService implements CommandLineRunner {
 
+    /** Дефолтные значения, которые должны быть в таблице по условию. */
     private static final List<String> DEFAULT_PREFIXES = List.of("[-]", "(-)", "{-}");
 
     private final PrefixRepository prefixRepository;
@@ -19,6 +23,9 @@ public class PrefixService implements CommandLineRunner {
         this.prefixRepository = prefixRepository;
     }
 
+    /**
+     * Возвращает все доступные префиксы для UI.
+     */
     @Transactional(readOnly = true)
     public List<PrefixResponse> getAll() {
         return prefixRepository.findAll().stream()
@@ -26,6 +33,11 @@ public class PrefixService implements CommandLineRunner {
                 .toList();
     }
 
+    /**
+     * Инициализация справочника префиксов при запуске приложения.
+     *
+     * <p>Если таблица пустая, добавляем 3 обязательных значения.</p>
+     */
     @Override
     @Transactional
     public void run(String... args) {

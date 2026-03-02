@@ -8,15 +8,24 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * Глобальный обработчик исключений REST API.
+ */
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
+    /**
+     * Преобразует ошибки "не найдено" в HTTP 404.
+     */
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleNotFound(EntityNotFoundException ex) {
         return Map.of("error", ex.getMessage());
     }
 
+    /**
+     * Преобразует ошибки валидации входных DTO в HTTP 400.
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleValidation(MethodArgumentNotValidException ex) {

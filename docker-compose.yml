@@ -1,15 +1,21 @@
 version: '3.9'
 services:
   postgres:
+    # Отдельный контейнер PostgreSQL для локальной разработки и тестового окружения.
     image: postgres:16
     container_name: wg-admin-postgres
     environment:
+      # Имя БД приложения.
       POSTGRES_DB: wg_admin
+      # Пользователь БД.
       POSTGRES_USER: wg_admin
+      # Пароль пользователя БД.
       POSTGRES_PASSWORD: wg_admin
     ports:
+      # Пробрасываем порт наружу, чтобы Java-приложение в LXC могло подключаться.
       - "5432:5432"
     volumes:
+      # Храним данные БД в именованном volume между перезапусками.
       - pg_data:/var/lib/postgresql/data
 
 volumes:

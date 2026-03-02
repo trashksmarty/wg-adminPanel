@@ -20,6 +20,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+/**
+ * Unit-тесты бизнес-логики TunnelService.
+ */
 @ExtendWith(MockitoExtension.class)
 class TunnelServiceTest {
 
@@ -35,6 +38,13 @@ class TunnelServiceTest {
     @InjectMocks
     private TunnelService tunnelService;
 
+    /**
+     * Проверяем, что при создании:
+     * - валидируется префикс,
+     * - вызывается удалённое создание туннеля,
+     * - туннель сохраняется локально,
+     * - и удалённо включается.
+     */
     @Test
     void createShouldCreateInRemoteAndSave() {
         TunnelCreateRequest request = new TunnelCreateRequest(
@@ -61,6 +71,9 @@ class TunnelServiceTest {
         verify(easyWireguardClient, times(1)).setTunnelEnabled("remote-1", true);
     }
 
+    /**
+     * Проверяем автоматическое выключение просроченного активного туннеля.
+     */
     @Test
     void deactivateExpiredShouldDisableAllExpired() {
         Tunnel tunnel = new Tunnel();
